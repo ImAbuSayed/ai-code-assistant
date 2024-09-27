@@ -8,7 +8,7 @@
                 class="mt-1 block w-full py-2 px-3 border border-gray-600 bg-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 text-white">
                 <option value="">Select a language</option>
                 <option value="php">PHP</option>
-                <option value="javascript">JavaScript</script>
+                <option value="javascript">JavaScript</option>
                 <option value="python">Python</option>
             </select>
         </div>
@@ -40,29 +40,7 @@
                 </button>
                 <div x-show="copySuccess" class="absolute top-2 right-10 text-green-500">Copied!</div>
                 <div x-ref="analysisText" class="mt-2 p-4 bg-gray-800 rounded-md overflow-x-auto text-sm text-gray-300">
-                    @php
-                        $lines = explode("\n", $analysis);
-                        $inCodeBlock = false;
-                    @endphp
-                    @foreach ($lines as $line)
-                        @if (strpos($line, '```') === 0)
-                            @if ($inCodeBlock)
-                                </code></pre>
-                            @else
-                                <pre><code class="language-{{ substr($line, 3) }}">
-@endif
-                            @php $inCodeBlock = !$inCodeBlock; @endphp
-@else
-@if ($inCodeBlock)
-{{ $line }}
-@else
-{!! preg_replace('/\*\*(.*?)\*\*/', '<strong>$1</strong>', $line) !!}<br>
-@endif
-@endif
-@endforeach
-                    @if ($inCodeBlock)
-</code></pre>
-                            @endif
+                    {!! $analysis !!}
                 </div>
             </div>
         </div>

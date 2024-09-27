@@ -5,12 +5,13 @@ namespace App\Livewire;
 use Livewire\Component;
 use App\Models\CodeSnippet;
 use OpenAI\Client;
+use League\CommonMark\CommonMarkConverter;
 
 class CodeReviewer extends Component
 {
-    public $code;
-    public $language;
-    public $analysis;
+    public $code = '';
+    public $language = '';
+    public $analysis = ''; // Initialize as an empty string
 
     protected $rules = [
         'code' => 'required',
@@ -36,7 +37,9 @@ class CodeReviewer extends Component
             ],
         ]);
 
-        $this->analysis = $response->choices[0]->message->content;
+        $markdown = $response->choices[0]->message->content;
+        $converter = new CommonMarkConverter();
+        $this->analysis = $converter->convertToHtml($markdown);
 
         CodeSnippet::create([
             'code' => $this->code,
